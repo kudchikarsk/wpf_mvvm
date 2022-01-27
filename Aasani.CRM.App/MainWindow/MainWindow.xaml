@@ -6,16 +6,17 @@
         xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Aasani.CRM.App" 
         mc:Ignorable="d"
-        Title="Aasani CRM" Height="450" Width="800">
+        Title="Aasani CRM" Height="450" Width="800"
+        local:ViewModelLocator.AutoWireViewModel="True">
 
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
     <Behaviors:Interaction.Triggers>
         <Behaviors:EventTrigger EventName="Loaded">
             <Behaviors:CallMethodAction TargetObject="{Binding}" MethodName="OnLoad"/>
         </Behaviors:EventTrigger>
-    </Behaviors:Interaction.Triggers>
+    </Behaviors:Interaction.Triggers>-->
     
     <StackPanel Orientation="Horizontal">
         <StackPanel>
