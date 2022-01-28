@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace Aasani.CRM.App
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged, IOnLoad
     {
         private readonly ContactService contactService;
         private ContactForm newContact;

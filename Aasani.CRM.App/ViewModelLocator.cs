@@ -32,6 +32,7 @@ namespace Aasani.CRM.App
             var viewModelType = Type.GetType(viewModelTypeName);
             var viewModel = Activator.CreateInstance(viewModelType);
             ((FrameworkElement)d).DataContext = viewModel;
+            if (viewModel is IOnLoad loadable) loadable.OnLoad();
         }
     }
 }
