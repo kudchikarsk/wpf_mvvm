@@ -6,6 +6,7 @@ using Aasani.CRM.Logic;
 using AsyncAwaitBestPractices.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,8 @@ namespace Aasani.CRM.App
         private readonly CustomerListViewModel customerListViewModel = new CustomerListViewModel();
         private readonly OrderViewModel orderViewModel = new OrderViewModel();
         private readonly OrderPrepViewModel orderPrepViewModel = new OrderPrepViewModel();
+        private readonly AddCustomerViewModel addCustomerViewModel = new AddCustomerViewModel();
+        private readonly CustomerService customerService;
         private BindableBase currentViewModel;
 
         public BindableBase CurrentViewModel { get => currentViewModel; set => SetProperty(ref currentViewModel, value); }
@@ -26,15 +29,32 @@ namespace Aasani.CRM.App
 
         public MainWindowViewModel()
         {
+            customerService = new CustomerService();
             CurrentViewModel = customerListViewModel;
             NavCommand = new AsyncCommand<string>(OnNav);
-            customerListViewModel.PlaceOrderEvent += async (e, c) =>
-            {
-                orderViewModel.SelectedCustomer = c;
-                await OnNav("order");
-            };
-
+            customerListViewModel.PlaceOrderEvent += GotoOrder;
+            customerListViewModel.AddCustomerEvent += GotoCustomer;
+            addCustomerViewModel.AddCustomerEvent += SaveCustomer;
         }
+
+        private async void GotoCustomer(object sender, EventArgs e)
+        {
+            await OnNav("add_customer");
+        }
+
+        private async void GotoOrder(object sender, Customer e)
+        {
+            orderViewModel.SelectedCustomer = e;
+            await OnNav("order");
+        }
+
+        private async void SaveCustomer(object sender, Customer e)
+        {
+            customerService.Add(e);
+            customerListViewModel.Load();
+            await OnNav("customer");
+        }
+
 
         public Task OnNav(string viewName)
         {
@@ -42,6 +62,9 @@ namespace Aasani.CRM.App
             {
                 case "customer":
                     CurrentViewModel = customerListViewModel;
+                    break;
+                case "add_customer":
+                    CurrentViewModel = addCustomerViewModel;
                     break;
                 case "order":
                     CurrentViewModel = orderViewModel;
