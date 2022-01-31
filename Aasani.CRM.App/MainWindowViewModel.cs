@@ -1,8 +1,6 @@
 ﻿using Aasani.CRM.App.Customers;
 using Aasani.CRM.App.OrderPrep;
 using Aasani.CRM.App.Orders;
-using Aasani.CRM.Data;
-using Aasani.CRM.Logic;
 using AsyncAwaitBestPractices.MVVM;
 using System;
 using System.Collections.Generic;
