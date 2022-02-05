@@ -78,47 +78,7 @@ namespace Aasani.CRM.App
 
         private void customerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            isUserInteraction = false;
-            var customer = customerList.SelectedItem as Customer;
-            if(customer != null)
-            {
-                firstNameTextBox.Text = customer.FirstName;
-                lastNameTextBox.Text = customer.LastName;
-                phoneTextBox.Text = customer.Phone;
-                isDeveloperChkBox.IsChecked = customer.IsDeveloper;                
-            }
-            isUserInteraction = true;
-        }
-
-        private void firstNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            CustomerUpdated();
-        }
-
-        private void lastNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            CustomerUpdated();
-        }
-
-        private void phoneTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            CustomerUpdated();
-        }
-
-        private void isDeveloperChkBox_Click(object sender, RoutedEventArgs e)
-        {
-            CustomerUpdated();
-        }
-
-        private void CustomerUpdated()
-        {
-            if (!isUserInteraction) return;
-
-            var customer = customerList.SelectedItem as Customer;
-            customer.FirstName = firstNameTextBox.Text;
-            customer.LastName = lastNameTextBox.Text;
-            customer.Phone = phoneTextBox.Text;
-            customer.IsDeveloper = isDeveloperChkBox.IsChecked.GetValueOrDefault();
+            customerDetails.SetCustomer(customerList.SelectedItem as Customer);
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
@@ -126,6 +86,7 @@ namespace Aasani.CRM.App
             var customer = new Customer { FirstName = "New", LastName = "", Phone = "", IsDeveloper = false };
             customerList.Items.Add(customer);
             customers.Add(customer);
+            customerList.SelectedIndex = customerList.Items.Count - 1;
         }
 
         private void deleteButton_Click(object sender, RoutedEventArgs e)

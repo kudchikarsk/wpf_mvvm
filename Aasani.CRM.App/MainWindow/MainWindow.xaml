@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Aasani.CRM.App" 
+        xmlns:controls="clr-namespace:Aasani.CRM.App.Controls"
         mc:Ignorable="d"
         Title="Aasani CRM" Height="450" Width="800">
 
@@ -49,12 +50,6 @@
             <ListView Grid.Row="1" x:Name="customerList" DisplayMemberPath="FirstName" SelectionChanged="customerList_SelectionChanged" />
         </Grid>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-            <TextBox Margin="0 0 0 0" x:Name="firstNameTextBox" TextChanged="firstNameTextBox_TextChanged" />
-            <TextBox Margin="0 5" x:Name="lastNameTextBox" TextChanged="lastNameTextBox_TextChanged" />
-            <TextBox Margin="0 5" x:Name="phoneTextBox" TextChanged="phoneTextBox_TextChanged" />
-            <CheckBox Margin="0 5" Content="Is Developer" x:Name="isDeveloperChkBox" Click="isDeveloperChkBox_Click" />
-
-        </StackPanel>
+        <controls:CustomerDetails Grid.Row="1" Grid.Column="1" x:Name="customerDetails" />
     </Grid>
 </Window>
