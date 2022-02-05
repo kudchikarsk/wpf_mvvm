@@ -20,9 +20,20 @@ namespace Aasani.CRM.App
     /// </summary>
     public partial class MainWindow : Window
     {
+        const string FORWARD = "\uE72A";
+        const string BACKWARD = "\uE72B";
+        bool isForward = true;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MoveCustomerListLayout_Click(object sender, RoutedEventArgs e)
+        {
+            isForward = !isForward;
+            listDirectionButton.Text = isForward ? FORWARD : BACKWARD;
+            customerListViewGrid.SetValue(Grid.ColumnProperty, isForward ? 0 : 2);
         }
     }
 }
