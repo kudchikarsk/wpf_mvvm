@@ -33,31 +33,27 @@
                 <Button Padding="10" Click="MoveCustomerListLayout_Click">
                     <TextBlock FontFamily="Segoe MDL2 Assets" x:Name="listDirectionButton">&#xE72A;</TextBlock>
                 </Button>
-                <Button Padding="10">
+                <Button Padding="10" x:Name="addButton" Click="addButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Margin="5 2">&#xE710;</TextBlock>
                         <TextBlock>Add Customer</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Padding="10">
+                <Button Padding="10" x:Name="deleteButton" Click="deleteButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Margin="5 2">&#xE74D;</TextBlock>
                         <TextBlock>Delete</TextBlock>
                     </StackPanel>
                 </Button>
             </StackPanel>
-            <ListView Grid.Row="1" >
-                <ListViewItem>John</ListViewItem>
-                <ListViewItem>Paul</ListViewItem>
-                <ListViewItem>Adam</ListViewItem>
-            </ListView>
+            <ListView Grid.Row="1" x:Name="customerList" DisplayMemberPath="FirstName" SelectionChanged="customerList_SelectionChanged" />
         </Grid>
 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-            <TextBox Margin="0,5,0,0" />
-            <TextBox Margin="0,5,0,0" />
-            <TextBox Margin="0,5,0,0" />
-           
+            <TextBox Margin="0,5,0,0" x:Name="firstNameTextBox" TextChanged="firstNameTextBox_TextChanged" />
+            <TextBox Margin="0,5,0,0" x:Name="lastNameTextBox" TextChanged="lastNameTextBox_TextChanged" />
+            <TextBox Margin="0,5,0,0" x:Name="phoneTextBox" TextChanged="phoneTextBox_TextChanged" />
+            <CheckBox Content="Is Developer" x:Name="isDeveloperChkBox" Click="isDeveloperChkBox_Click" />
 
         </StackPanel>
     </Grid>
