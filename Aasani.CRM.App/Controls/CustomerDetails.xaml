@@ -6,11 +6,24 @@
              xmlns:local="clr-namespace:Aasani.CRM.App.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Thickness x:Key="labelMargin">10 0 10 5</Thickness>
+        <Thickness x:Key="txtBoxMargin">10 0 10 10</Thickness>
+    </UserControl.Resources>
+    
+    
     <StackPanel  Orientation="Vertical">
-        <TextBox Margin="0 0 0 0" x:Name="firstNameTextBox" TextChanged="firstNameTextBox_TextChanged" />
-        <TextBox Margin="0 5" x:Name="lastNameTextBox" TextChanged="lastNameTextBox_TextChanged" />
-        <TextBox Margin="0 5" x:Name="phoneTextBox" TextChanged="phoneTextBox_TextChanged" />
-        <CheckBox Margin="0 5" Content="Is Developer" x:Name="isDeveloperChkBox" Click="isDeveloperChkBox_Click" />
+        <Label Margin="{StaticResource labelMargin}">First Name</Label>
+        <TextBox Margin="{StaticResource txtBoxMargin}"  x:Name="firstNameTextBox" TextChanged="firstNameTextBox_TextChanged" />
+
+        <Label Margin="{StaticResource labelMargin}">Last Name</Label>
+        <TextBox Margin="{StaticResource txtBoxMargin}" x:Name="lastNameTextBox" TextChanged="lastNameTextBox_TextChanged" />
+
+        <Label Margin="{StaticResource labelMargin}">Phone</Label>
+        <TextBox Margin="{StaticResource txtBoxMargin}" x:Name="phoneTextBox" TextChanged="phoneTextBox_TextChanged" />
+
+        <CheckBox Margin="{StaticResource labelMargin}" Content="Is Developer" x:Name="isDeveloperChkBox" Click="isDeveloperChkBox_Click" />
 
     </StackPanel>
 </UserControl>

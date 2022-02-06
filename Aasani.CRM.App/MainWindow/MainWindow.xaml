@@ -9,6 +9,10 @@
         mc:Ignorable="d"
         Title="Aasani CRM" Height="450" Width="800">
 
+    <Window.Resources>
+        <Thickness x:Key="btnMargin">5</Thickness>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -31,16 +35,16 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Button Padding="10" Click="MoveCustomerListLayout_Click">
-                    <TextBlock FontFamily="Segoe MDL2 Assets" x:Name="listDirectionButton">&#xE72A;</TextBlock>
+                <Button Margin="{StaticResource btnMargin}" Click="MoveCustomerListLayout_Click">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Margin="5 2" x:Name="listDirectionButton">&#xE72A;</TextBlock>
                 </Button>
-                <Button Padding="10" x:Name="addButton" Click="addButton_Click">
+                <Button Margin="{StaticResource btnMargin}" x:Name="addButton" Click="addButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Margin="5 2">&#xE710;</TextBlock>
                         <TextBlock>Add Customer</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Padding="10" x:Name="deleteButton" Click="deleteButton_Click">
+                <Button Margin="{StaticResource btnMargin}" x:Name="deleteButton" Click="deleteButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Margin="5 2">&#xE74D;</TextBlock>
                         <TextBlock>Delete</TextBlock>
