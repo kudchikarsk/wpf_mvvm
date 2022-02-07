@@ -7,7 +7,8 @@
         xmlns:local="clr-namespace:Aasani.CRM.App" 
         xmlns:controls="clr-namespace:Aasani.CRM.App.Controls"
         mc:Ignorable="d"
-        Title="Aasani CRM" Height="450" Width="800">
+        Title="Aasani CRM" Height="450" Width="800"
+        x:Name="root">
 
     <Window.Resources>
         <Thickness x:Key="btnMargin">5 5 0 5</Thickness>
@@ -38,22 +39,22 @@
                 <Button Margin="{StaticResource btnMargin}" Click="MoveCustomerListLayout_Click">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Margin="5 2" x:Name="listDirectionButton">&#xE72A;</TextBlock>
                 </Button>
-                <Button Margin="{StaticResource btnMargin}" x:Name="addButton" Click="addButton_Click">
+                <Button Margin="{StaticResource btnMargin}" x:Name="addButton" Command="{Binding AddCustomerCommand}" >
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Margin="5 2">&#xE710;</TextBlock>
                         <TextBlock>Add Customer</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Margin="{StaticResource btnMargin}" x:Name="deleteButton" Click="deleteButton_Click">
+                <Button Margin="{StaticResource btnMargin}" x:Name="deleteButton" Command="{Binding DeleteCustomerCommand}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Margin="5 2">&#xE74D;</TextBlock>
                         <TextBlock>Delete</TextBlock>
                     </StackPanel>
                 </Button>
             </StackPanel>
-            <ListView Grid.Row="1" x:Name="customerList" DisplayMemberPath="FirstName" SelectionChanged="customerList_SelectionChanged" />
+            <ListView Grid.Row="1" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}" DisplayMemberPath="FirstName"  />
         </Grid>
 
-        <controls:CustomerDetails Grid.Row="1" Grid.Column="1" x:Name="customerDetails" />
+        <controls:CustomerDetails Grid.Row="1" Grid.Column="1" x:Name="customerDetails" Customer="{Binding SelectedCustomer}" Visibility="{Binding ElementName=root, Path=IsCustomerSelected}" />
     </Grid>
 </Window>

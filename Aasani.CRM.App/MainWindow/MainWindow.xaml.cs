@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,55 +19,28 @@ namespace Aasani.CRM.App
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         const string FORWARD = "\uE72A";
         const string BACKWARD = "\uE72B";
         bool isForward = true;
-        private List<Customer> customers;
-        private bool isUserInteraction = true;
+        MainWindowViewModel ViewModel;
+
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public MainWindow()
         {
             InitializeComponent();
-            customers = new List<Customer>
-            {
-                new Customer
-                {
-                    FirstName = "Chris",
-                    LastName = "Brown",
-                    Phone = "55486583454",
-                    IsDeveloper = true
-                },
-                new Customer
-                {
-                    FirstName = "Paul",
-                    LastName = "Green",
-                    Phone = "567345456757",
-                    IsDeveloper = false
-                },
-                new Customer
-                {
-                    FirstName = "Jean",
-                    LastName = "White",
-                    Phone = "567345456757",
-                    IsDeveloper = true
-                },
-            };
-
-            Loaded += MainWindow_Loaded;
-        }
-
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadCustomers();
-
-        }
-
-        private void LoadCustomers()
-        {
-            customerList.Items.Clear();
-            customers.ForEach(customer => customerList.Items.Add(customer));
+            ViewModel = new MainWindowViewModel(new CustomerService());
+            DataContext = ViewModel;
+            ViewModel.LoadCustomers();
+            ViewModel.PropertyChanged += (s, e) =>
+              {
+                  if (e.PropertyName == nameof(MainWindowViewModel.IsCustomerSelected))
+                  {
+                      PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsCustomerSelected)));
+                  }
+              };
         }
 
         private void MoveCustomerListLayout_Click(object sender, RoutedEventArgs e)
@@ -76,24 +50,6 @@ namespace Aasani.CRM.App
             customerListViewGrid.SetValue(Grid.ColumnProperty, isForward ? 0 : 2);
         }
 
-        private void customerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            customerDetails.SetCustomer(customerList.SelectedItem as Customer);
-        }
-
-        private void addButton_Click(object sender, RoutedEventArgs e)
-        {
-            var customer = new Customer { FirstName = "New", LastName = "", Phone = "", IsDeveloper = false };
-            customerList.Items.Add(customer);
-            customers.Add(customer);
-            customerList.SelectedIndex = customerList.Items.Count - 1;
-        }
-
-        private void deleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            var customer = customerList.SelectedItem as Customer;
-            customerList.Items.Remove(customer);
-            customers.Remove(customer);
-        }
+        public Visibility IsCustomerSelected => ViewModel?.IsCustomerSelected ?? false ? Visibility.Visible : Visibility.Collapsed;
     }
 }

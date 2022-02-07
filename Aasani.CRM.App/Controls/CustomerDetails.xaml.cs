@@ -18,7 +18,6 @@ namespace Aasani.CRM.App.Controls
     /// </summary>
     public partial class CustomerDetails : UserControl
     {
-        private Customer customer;
         private bool isUserInteraction = true;
 
         public CustomerDetails()
@@ -26,18 +25,35 @@ namespace Aasani.CRM.App.Controls
             InitializeComponent();
         }
 
-        internal void SetCustomer(Customer customer)
+        public Customer Customer
         {
-            this.customer = customer;
-            isUserInteraction = false;
-            if (customer != null)
+            get { return (Customer)GetValue(CustomerProperty); }
+            set { SetValue(CustomerProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Customer.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CustomerProperty =
+            DependencyProperty.Register("Customer", typeof(Customer), typeof(CustomerDetails), new PropertyMetadata(null, CustomerPropertyChanged));
+
+        private static void CustomerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as CustomerDetails;
+            if(d != null)
             {
-                firstNameTextBox.Text = customer.FirstName;
-                lastNameTextBox.Text = customer.LastName;
-                phoneTextBox.Text = customer.Phone;
-                isDeveloperChkBox.IsChecked = customer.IsDeveloper;
+                control.isUserInteraction = false;
+
+                var customer = e.NewValue as Customer;                
+                if (customer != null)
+                {
+                    control.firstNameTextBox.Text = customer.FirstName;
+                    control.lastNameTextBox.Text = customer.LastName;
+                    control.phoneTextBox.Text = customer.Phone;
+                    control.isDeveloperChkBox.IsChecked = customer.IsDeveloper;
+                }
+
+                control.isUserInteraction = true;
             }
-            isUserInteraction = true;
+            
         }
 
         private void firstNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -63,12 +79,12 @@ namespace Aasani.CRM.App.Controls
         private void CustomerUpdated()
         {
             if (!isUserInteraction) return;
-            if(customer != null)
+            if(Customer != null)
             {
-                customer.FirstName = firstNameTextBox.Text;
-                customer.LastName = lastNameTextBox.Text;
-                customer.Phone = phoneTextBox.Text;
-                customer.IsDeveloper = isDeveloperChkBox.IsChecked.GetValueOrDefault();
+                Customer.FirstName = firstNameTextBox.Text;
+                Customer.LastName = lastNameTextBox.Text;
+                Customer.Phone = phoneTextBox.Text;
+                Customer.IsDeveloper = isDeveloperChkBox.IsChecked.GetValueOrDefault();
             }
         }
     }

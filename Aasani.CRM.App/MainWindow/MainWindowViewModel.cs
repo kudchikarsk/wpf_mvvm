@@ -3,6 +3,7 @@ using Aasani.CRM.Logic;
 using AsyncAwaitBestPractices.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -11,72 +12,50 @@ using System.Windows.Input;
 
 namespace Aasani.CRM.App
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : Observable
     {
-        private readonly ContactService contactService;
-        private ContactForm newContact;
-        private List<ContactForm> contacts;
+        private readonly CustomerService customerService;
+        private ObservableCollection<Customer> customers;
+        private Customer selectedCustomer;
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        public ContactForm NewContact
-        {
-            get => newContact;
-            set
-            {
-                newContact = value;
-                PropertyChanged(this, new PropertyChangedEventArgs(nameof(NewContact)));
-            }
-        }
-
-        public List<ContactForm> Contacts 
-        { 
-            get => contacts; 
-            set
-            {
-                contacts = value;
-                PropertyChanged(this, new PropertyChangedEventArgs(nameof(Contacts)));
-            }
-        }
-
-        public ICommand AddContact { get; set; }
-
-        public MainWindowViewModel()
-        {
-            contactService = new ContactService();
-            NewContact = new ContactForm();
-            AddContact = new AsyncCommand(ExecuteAddContact);
-        }
-
-        public async void OnLoad()
-        {
-            IEnumerable<Contact> contacts = await contactService.Paginate(_ => true);
-            Contacts = contacts.Select(contact => new ContactForm
-            {
-                FirstName = contact.FirstName,
-                LastName = contact.LastName,
-                Mobile = contact.Mobiles.FirstOrDefault(),
-            }).ToList();
-        }
-
-        private async Task ExecuteAddContact()
-        {
-            Contact contact = await contactService.Add(new Contact
-            {
-                FirstName = NewContact.FirstName,
-                LastName = NewContact.LastName,
-                Mobiles = new List<string> { NewContact.Mobile },
-            });
-            Contacts = new List<ContactForm> { new ContactForm{
-                FirstName = contact.FirstName,
-                LastName = contact.LastName,
-                Mobile = contact.Mobiles.FirstOrDefault(),
-
+        public ObservableCollection<Customer> Customers { get => customers; set => OnPropertyChange(ref customers, value); }
+        public Customer SelectedCustomer { get => selectedCustomer; set {
+                OnPropertyChange(ref selectedCustomer, value);
+                OnPropertyChange(nameof(IsCustomerSelected));
             } }
-                            .Concat(Contacts)
-                            .ToList();
+        public IAsyncCommand AddCustomerCommand { get; set; }
+        public IAsyncCommand DeleteCustomerCommand { get; set; }
 
-            NewContact = new ContactForm();
+        public bool IsCustomerSelected => SelectedCustomer != null;
+
+        public MainWindowViewModel(CustomerService customerService)
+        {
+            this.customerService = customerService;
+            AddCustomerCommand = new AsyncCommand(AddCustomer);
+            DeleteCustomerCommand = new AsyncCommand(DeleteCustomer);
+        }
+
+        public void LoadCustomers()
+        {
+            Customers = new ObservableCollection<Customer>(customerService.GetAll());
+            SelectedCustomer = null;
+        }
+
+        private Task AddCustomer()
+        {
+            var customer = new Customer { FirstName = "New", LastName = "", Phone = "", IsDeveloper = false };
+            Customers.Add(customer);
+            customerService.Add(customer);
+            SelectedCustomer = customer;
+            return Task.CompletedTask;
+        }
+
+        private Task DeleteCustomer()
+        {
+            Customers.Remove(SelectedCustomer);
+            customerService.Remove(selectedCustomer);
+            SelectedCustomer = null;
+            return Task.CompletedTask;
         }
     }
 }
