@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Aasani.CRM.App.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="root">
 
     <UserControl.Resources>
         <Thickness x:Key="labelMargin">10 0 10 5</Thickness>
@@ -15,15 +16,15 @@
     
     <StackPanel  Orientation="Vertical">
         <Label Margin="{StaticResource labelMargin}">First Name</Label>
-        <TextBox Margin="{StaticResource txtBoxMargin}"  x:Name="firstNameTextBox" TextChanged="firstNameTextBox_TextChanged" />
+        <TextBox Margin="{StaticResource txtBoxMargin}"  Text="{Binding ElementName=root, Path=Customer.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Label Margin="{StaticResource labelMargin}">Last Name</Label>
-        <TextBox Margin="{StaticResource txtBoxMargin}" x:Name="lastNameTextBox" TextChanged="lastNameTextBox_TextChanged" />
+        <TextBox Margin="{StaticResource txtBoxMargin}" Text="{Binding ElementName=root, Path=Customer.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Margin="{StaticResource labelMargin}">Phone</Label>
-        <TextBox Margin="{StaticResource txtBoxMargin}" x:Name="phoneTextBox" TextChanged="phoneTextBox_TextChanged" />
+        <TextBox Margin="{StaticResource txtBoxMargin}" Text="{Binding ElementName=root, Path=Customer.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <CheckBox Margin="{StaticResource labelMargin}" Content="Is Developer" x:Name="isDeveloperChkBox" Click="isDeveloperChkBox_Click" />
+        <CheckBox Margin="{StaticResource labelMargin}" Content="Is Developer" IsChecked="{Binding ElementName=root, Path=Customer.IsDeveloper, Mode=TwoWay}" />
 
     </StackPanel>
 </UserControl>

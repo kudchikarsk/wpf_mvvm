@@ -18,7 +18,6 @@ namespace Aasani.CRM.App.Controls
     /// </summary>
     public partial class CustomerDetails : UserControl
     {
-        private bool isUserInteraction = true;
 
         public CustomerDetails()
         {
@@ -33,59 +32,8 @@ namespace Aasani.CRM.App.Controls
 
         // Using a DependencyProperty as the backing store for Customer.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CustomerProperty =
-            DependencyProperty.Register("Customer", typeof(Customer), typeof(CustomerDetails), new PropertyMetadata(null, CustomerPropertyChanged));
+            DependencyProperty.Register("Customer", typeof(Customer), typeof(CustomerDetails), new PropertyMetadata(null));
 
-        private static void CustomerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = d as CustomerDetails;
-            if(d != null)
-            {
-                control.isUserInteraction = false;
-
-                var customer = e.NewValue as Customer;                
-                if (customer != null)
-                {
-                    control.firstNameTextBox.Text = customer.FirstName;
-                    control.lastNameTextBox.Text = customer.LastName;
-                    control.phoneTextBox.Text = customer.Phone;
-                    control.isDeveloperChkBox.IsChecked = customer.IsDeveloper;
-                }
-
-                control.isUserInteraction = true;
-            }
-            
-        }
-
-        private void firstNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            CustomerUpdated();
-        }
-
-        private void lastNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            CustomerUpdated();
-        }
-
-        private void phoneTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            CustomerUpdated();
-        }
-
-        private void isDeveloperChkBox_Click(object sender, RoutedEventArgs e)
-        {
-            CustomerUpdated();
-        }
-
-        private void CustomerUpdated()
-        {
-            if (!isUserInteraction) return;
-            if(Customer != null)
-            {
-                Customer.FirstName = firstNameTextBox.Text;
-                Customer.LastName = lastNameTextBox.Text;
-                Customer.Phone = phoneTextBox.Text;
-                Customer.IsDeveloper = isDeveloperChkBox.IsChecked.GetValueOrDefault();
-            }
-        }
+       
     }
 }
